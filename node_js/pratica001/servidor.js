@@ -14,8 +14,6 @@ const servidor = http.createServer((req, res) => {
     res.end();
 })
 
-servidor.listen(porta, host, 
-    () => {console.log('Servidor rodando!')}
-);
+servidor.listen(porta, host, () => {console.log('Servidor rodando!')});
 
-// Na url: http://localhost:3000/aula004b.js/nome=Alex&curso=node
+// Na url: http://localhost:3000/servidor.js
