@@ -1,3 +1,4 @@
+// Essa aula foi possivel pegar dados da url atraves do metodo GET
 const http = require('http');
 const url = require('url');
 const porta = 3000;
