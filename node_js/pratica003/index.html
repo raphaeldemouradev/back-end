@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        header {
+            margin: 10px;
+        }
+
+        main {
+            background-color: #0065c4;
+            display: block;
+            text-align: center;
+        }
+
+        div {
+            margin: 10px;
+            text-align: left;
+            font-size: 20px;
+        }
+
+        h3 {
+            padding: 10px;
+        }
+
+        input[type="submit"] {
+            font-size: 20px;
+            font-weight: 800;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Compras Online</h1>
+    </header>
+    <main>
+        <form action="index.js" method="get">
+            <div>
+                <h3>Escolha "1" produto:</h3>
+            </div>
+            <div>
+                <input type="radio" name="camisa" id="icamisa">
+                <label for="icamisa">Camisa</label>
+            </div>
+            <div>
+                <input type="radio" name="calca" id="icalca">
+                <label for="icalca">Calça</label>
+            </div>
+
+            <input type="submit" value="Enviar">
+        </form>
+    </main>
+</body>
+</html>
