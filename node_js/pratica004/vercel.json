@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "redirects": [
+    {
+      "source": "/servidor.js",
+      "destination": "/@vercel/node",
+      "permanent": true
+    }
+  ],
+  "routes": [
+    {
+      "source": "/(.*)",
+      "dest": "servidor.js"
+    }
+  ]
+}
