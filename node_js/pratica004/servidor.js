@@ -13,7 +13,7 @@ let BancoDados = []
 app.get('/servidor.js', (req, res) => {
     const {nome, senha} = req.query;
     
-    const newUser = {nome, senha, data: new Date()};
+    const newUser = {id: BancoDados.length + 1, nome, senha, data: new Date()};
     BancoDados.push(newUser)
 
     console.log("Dadossalvos na API interna:", BancoDados)
