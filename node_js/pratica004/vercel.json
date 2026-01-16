@@ -1,15 +1,14 @@
 {
   "version": 2,
-  "redirects": [
+  "builds": [
     {
-      "source": "/servidor.js",
-      "destination": "/@vercel/node",
-      "permanent": true
+      "src": "servidor.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "source": "/(.*)",
+      "src": "/(.*)",
       "dest": "servidor.js"
     }
   ]
