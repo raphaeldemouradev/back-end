@@ -10,20 +10,10 @@ async function carregarDados() {
                 <p>Nome: ${id.nome}</p>
                 <p>Senha: ${id.senha}</p>
                 <p>Data: ${id.data}</p>
+                <div class="remover">
+                    <button>🗑️</button>
+                </div>
             </div>
         `).join('');
-
-    /*
-    const nome = document.querySelector('#nome');
-    nome.innerHTML = dados[0].nome;
-
-    const senha = document.querySelector('#senha');
-    senha.innerHTML = dados[0].senha;
-
-    const data = document.querySelector('#data');
-    data.innerHTML = dados[0].data;
-    */
 }
 carregarDados();
-
-
