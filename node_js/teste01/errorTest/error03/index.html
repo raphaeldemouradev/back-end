@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        div {
+            background-color: #c9c9c9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <input 
+            type="text" 
+            name="name" 
+            id="iname" 
+            placeholder="Nome"
+        >
+
+        <input 
+            type="number" 
+            name="senha" 
+            id="isenha"
+            placeholder="senha"
+        >
+
+        <input type="button" value="Enviar" onclick="Verificador()">
+    </div>
+
+    <script src="serv.js"></script>
+</body>
+</html>
