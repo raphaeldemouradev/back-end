@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        section {
+            margin: 10px 0px;
+        }
+
+        .velocidade {
+            display: flex;
+            text-align: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .num {
+            font-size: 30px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Cuidado com a velocidade</h1>
+
+        <section class="velocidade">
+            <p>Velocidade:<p class="num" id="num">0</p></p>
+        </section>
+
+        <section>
+            <button id="aumentar">Aumentar</button>
+            <button id="marcha">Trocar marcha</button>
+        </section>
+
+        <section>
+            <button id="diminuir">Diminuir</button>
+            <button id="freio">Freio de mão</button>
+        </section>
+    </main>
+
+    <script src="motor.js"></script>
+</body>
+</html>
