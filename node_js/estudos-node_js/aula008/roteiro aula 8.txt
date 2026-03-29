@@ -1,0 +1,5 @@
+Recomendação: ver aula de sql Workbench.
+-------------------
+npm install mysql2 --save
+
+- Vamos trabalhar com ASYNC e AWAIT pois temos que esperar o banco de dados.
