@@ -11,9 +11,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 let BancoDados = []
 
 app.get('/servidor.js', (req, res) => {
-    const {nome, senha} = req.query;
+    const {nome, idade} = req.query;
     
-    const newUser = {id: BancoDados.length + 1, nome, senha, data: new Date()};
+    const newUser = {id: BancoDados.length + 1, nome, idade, data: new Date()};
     BancoDados.push(newUser)
 
     console.log("Dadossalvos na API interna:", BancoDados)

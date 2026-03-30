@@ -8,8 +8,9 @@ async function carregarDados() {
             <div class='container'>
                 <h3>Usuario Cadastrado</h3>
                 <p>Nome: ${id.nome}</p>
-                <p>Senha: ${id.senha}</p>
+                <p>Idade: ${id.idade}</p>
                 <p>Data: ${id.data}</p>
+
                 <div class="remover">
                     <button>🗑️</button>
                 </div>
