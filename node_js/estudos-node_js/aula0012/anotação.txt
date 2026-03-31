@@ -1,0 +1,6 @@
+Upload de arquivos em Node com o módulo formidade.
+
+- npm install formidable
+/
+Nessaa aula aprendemos: 
+Com um botão selecionar arquivo, e o de baixo enviar para local definido no servidor.
