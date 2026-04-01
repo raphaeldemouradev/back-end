@@ -7,8 +7,8 @@ const servidor = http.createServer((req, res) => {
     if (req.url == '/envioDeArquivo') {
         const form = new formidavel.IncomingForm() // criar form, novo formidavel, IncomingForm retorna o forluario que foi enviado
         form.parse(req, (erro, campo, arquivos) => {
-            const urlantiga = arquivos.filetoupload[0].filepath // url antiga (exname: path)
-            const urlnova = './local-nuvem/' + arquivos.filetoupload[0].originalFilename // novo local a ser movido, "name" nome original do arquivo (exname: name)
+            //const urlantiga = arquivos.filetoupload[0].filepath // url antiga (exname: path)
+            //const urlnova = './local-nuvem/' + arquivos.filetoupload[0].originalFilename // novo local a ser movido, "name" nome original do arquivo (exname: name)
             fs.rename(urlantiga, urlnova, (erro) => {
                 if (erro) throw erro
                 res.write('Arquivos movidos')
