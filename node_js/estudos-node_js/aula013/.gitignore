@@ -1,0 +1,10 @@
+# Arquivos de ambiente (Senhas e URLs)
+.env
+
+# Pastas de dependências (Muito pesadas para o Git)
+node_modules/
+
+# Logs de erro
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
