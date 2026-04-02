@@ -1,5 +1,6 @@
+require('dotenv').config();
 const mongodb = require('mongodb').MongoClient
-const url = 
+const url = process.env.MONGODB_URL
 
 async function rodar() {
     try {
@@ -8,14 +9,13 @@ async function rodar() {
         console.log("Conectado ao banco com Sucesso!")
 
         const dbo = banco.db("cfbcursos")
-        const obj = {curso:"Curso de Node", canal:"CFB Cursos"}
+        const obj = {curso:"Curso de Javascript", canal:"CFB Cursos"}
 
         const colecao = "curso"
 
         const resultado = await dbo.collection(colecao).insertOne(obj)
         console.log("1 Curso inserido")
         await banco.close()
-        console.log("Conexão fechada")
 
     } catch (erro) {
         console.log("Erro detectado", erro)
