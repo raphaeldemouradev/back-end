@@ -29,11 +29,18 @@ async function rodar() {
         await banco.close()
         */
 
-        // usando query
+        /* Usando QUERY
         // se usar "/.t/" retorna os registros que termina com T
         // se usar "/C./" retorna os registros que começa com C
         const query = {curso: /.t/}
         const resultado = await dbo.collection(colecao).find(query,{projection:{_id:0,}}).toArray()
+        console.log(resultado) 
+        await banco.close()
+        */
+
+        const ordenacao = {curso: 1}
+        const query = {}
+        const resultado = await dbo.collection(colecao).find(query).sort(ordenacao).toArray()
         console.log(resultado) 
         await banco.close()
 
