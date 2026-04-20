@@ -1,0 +1,12 @@
+node_modules
+# Keep environment variables out of version control
+.env
+/generated/prisma
+
+# Banco SQLite
+*.db
+*.db-journal
+
+# Log e builds
+dist/
+*.log
