@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="/perfil.css">
 </head>
 <body>
-    <header></header>
+    <header>
+        <button class="btn-menu" id="btn-edit">Edit ✏️</button>
+        <button class="btn-menu" id="btn-delete">Delet 🗑️</button>
+    </header>
     <main>
         <section class="profile">
             <div class="circle">F</div>
@@ -25,7 +28,7 @@
             try {
 
                 const resposta = await fetch('http://localhost:3000/api/users')
-                const  dados = await resposta.json()
+                const dados = await resposta.json()
                 console.log(dados)
 
                 const nome = document.getElementsByClassName('nome-user')[0]
@@ -36,13 +39,23 @@
                     nome.textContent = Erro
                 }
 
+                // Edit perfil
+                const btnEdit = document.getElementById('btn-edit')
+                btnEdit.addEventListener('click', () => {
+                    console.log("Editar perfil")
+
+                    dados.id = `${dados.length - 1}`
+                    fetch(`http://localhost:3000/api/users/${dados.id}`, {
+                        method: "PUT"
+                    })
+                })
+
             } catch (error) {
                 console.error('Erro de requisição', status.error)
             }
         }
         getApi()
 
-        
         
     </script>
 </body>

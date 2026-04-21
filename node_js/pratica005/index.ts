@@ -39,10 +39,35 @@ app.post('/cadastro', async (req, res) => {
 
 })
 
-// API call
+///// Controles /////
+// API call - insert
 app.get('/api/users', async (req, res) => {
     const usuarios = await prisma.user.findMany();
     res.json(usuarios)
+})
+
+// Edit - Atualiza
+app.put(`/api/users/:id`, async (req, res) => {
+    let { id } = req.params;
+    const { name, email } = req.body;
+
+    try {
+        const userUp = await prisma.user.update({
+            where: {
+                id: parseInt(id),
+            },
+            data: {
+                name,
+                email,
+            },
+        });
+
+        res.json(userUp)
+        console.log(userUp, "Atualizado")
+
+    } catch (error) {
+        res.status(400).json({error: "Erro ao Atualizar"})
+    }
 })
 
 ///// ROTAS ////
