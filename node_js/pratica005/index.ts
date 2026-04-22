@@ -70,6 +70,22 @@ app.put(`/api/users/:id`, async (req, res) => {
     }
 })
 
+// Deleta - delete
+app.delete(`/api/users/:id`, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const userDl = await prisma.user.delete({
+            where: { id: parseInt(id) },
+        });
+
+        console.log(userDl, "Deletado")
+        res.status(200).json({ message: "Usuário deletado com sucesso" });
+
+    } catch (error) {
+        res.status(500).json({error: "Erro ao Deletar"})
+    }
+})
+
 ///// ROTAS ////
 // Cadastro
 app.get('/', (req, res) => {

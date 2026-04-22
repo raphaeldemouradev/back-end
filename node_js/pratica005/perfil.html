@@ -13,10 +13,13 @@
     </header>
     <main>
         <section class="profile">
-            <div class="circle">F</div>
+            <div class="circle"></div>
             <div class="nome-user"></div>
         </section>
-        <h1>Perfil</h1>
+        <section class="profile">
+            <p style="padding-right: 5px;">Email: </p>
+            <div class="email-user"></div>
+        </section>
     </main>
     <footer>
         <a href="/home" class="navbar">Home</a>
@@ -32,11 +35,14 @@
                 console.log(dados)
 
                 const nome = document.getElementsByClassName('nome-user')[0]
+                const email = document.getElementsByClassName('email-user')[0]
                 if (dados.length > 0) {
                     const ultimoUser = dados[dados.length - 1]
                     nome.textContent = ultimoUser.name
+                    email.textContent = ultimoUser.email
                 } else {
-                    nome.textContent = Erro
+                    nome.textContent = "Erro"
+                    email.textContent = "Erro"
                 }
 
                 // Edit perfil
@@ -48,6 +54,32 @@
                     fetch(`http://localhost:3000/api/users/${dados.id}`, {
                         method: "PUT"
                     })
+                })
+
+                // Deletar user
+                const btnDelete = document.getElementById('btn-delete')
+
+                btnDelete.addEventListener('click', async () => {
+                    console.log("Deletar perfil")
+
+                    if (confirm("Tem certeza que deseja deletar o perfil?")) {
+                        try {
+                            const resposta = await fetch(`http://localhost:3000/api/users/${dados[0].id}`, {
+                                method: "DELETE"
+                            })
+
+                                if (resposta.ok) {
+                                    console.log("Perfil deletado com sucesso")
+                                    window.location.href = "/"
+                                } else {
+                                    console.log("Erro no servidor ao deletar o perfil")
+                                }
+                        } catch (error) {
+                            console.error('Erro de requisição', status.error)
+                        }
+                    } else {
+                        console.log("Ação de deletar perfil cancelada")
+                    }
                 })
 
             } catch (error) {
