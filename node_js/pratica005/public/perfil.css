@@ -85,3 +85,88 @@ footer {
 .navbar:hover {
   background-color: #5e5e5e;
 }
+
+/* Popup */
+.popup-overley {
+  background-color: #00000080;
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.popup-card {
+  background: #2b2f70;
+  border: 1px solid #333545;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  padding: 24px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.popup-card h3 {
+  margin: 0px 0px 20px 0px;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.input-field {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.input-field input {
+  background: #d4d4d4;
+  border: 1px solid #333;
+  color: #000000;
+  padding: 10px;
+  border-radius: 6px;
+  outline: none;
+}
+
+.input-field input:focus {
+  border-color: #6ab0ff;
+}
+
+.popup-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin: 20px;
+}
+
+.btn-primary, .btn-secondary {
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-primary:hover  {
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.btn-primary {
+  background: #37752b;
+}
+.btn-primary:hover {
+  background: #22491b;
+}
+
+.btn-secondary {
+  background: rgb(190, 7, 7);
+}
+.btn-secondary:hover {
+  background: rgb(153, 0, 0);
+}
+
+.hidden { display: none; }

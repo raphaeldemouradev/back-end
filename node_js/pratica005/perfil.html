@@ -28,6 +28,8 @@
 
     <script>
         async function getApi() {
+            let usuarioAtualId = null
+
             try {
 
                 const resposta = await fetch('http://localhost:3000/api/users')
@@ -38,6 +40,9 @@
                 const email = document.getElementsByClassName('email-user')[0]
                 if (dados.length > 0) {
                     const ultimoUser = dados[dados.length - 1]
+
+                    usuarioAtualId = ultimoUser.id;
+
                     nome.textContent = ultimoUser.name
                     email.textContent = ultimoUser.email
                 } else {
@@ -46,14 +51,56 @@
                 }
 
                 // Edit perfil
+                const popUp = document.getElementById('customPopup')
+                const btnCancel = document.getElementById('btnPopCancel')
                 const btnEdit = document.getElementById('btn-edit')
-                btnEdit.addEventListener('click', () => {
-                    console.log("Editar perfil")
+                btnCancel.onclick = () => {
+                    popUp.classList.add('hidden')
+                }
+                popUp.onclick = (e) => {
+                    if (e.target === popUp)
+                    popUp.classList.add('hidden')
+                }
 
-                    dados.id = `${dados.length - 1}`
-                    fetch(`http://localhost:3000/api/users/${dados.id}`, {
-                        method: "PUT"
-                    })
+                btnEdit.onclick = () => {
+                    popUp.classList.remove('hidden')
+                }
+ 
+                const btnSave = document.getElementById('btnPopSave')
+                btnSave.addEventListener('click', async () => {
+                    console.log("Editar perfil")
+                    if (!usuarioAtualId) {
+                        alert("ID do usuario não listado")
+                        return
+                    }
+                    
+                    try {
+
+                        const novoNome = document.getElementById('popName').value;
+                        const novoEmail = document.getElementById('popEmail').value;
+                        
+                        const resposta = await fetch(`http://localhost:3000/api/users/${usuarioAtualId}`, {
+                            method: "PUT",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({
+                                name: novoNome,
+                                email: novoEmail,
+                            })
+                        })
+                    
+                        if (resposta.ok) {
+                            console.log("Perfil atualizado com sucesso")
+                            const dadosAtualizado = await resposta.json()
+
+                            popUp.classList.add('hidden');
+                            window.location.reload();
+                        } else {
+                            console.log("Erro no servidor ao atualizar o perfil")
+                        }
+                        
+                    } catch (error) {
+                        console.error('Erro de requisição ao atualizar', status.error)
+                    }
                 })
 
                 // Deletar user
@@ -68,12 +115,12 @@
                                 method: "DELETE"
                             })
 
-                                if (resposta.ok) {
-                                    console.log("Perfil deletado com sucesso")
-                                    window.location.href = "/"
-                                } else {
-                                    console.log("Erro no servidor ao deletar o perfil")
-                                }
+                            if (resposta.ok) {
+                                console.log("Perfil deletado com sucesso")
+                                window.location.href = "/"
+                            } else {
+                                console.log("Erro no servidor ao deletar o perfil")
+                            }
                         } catch (error) {
                             console.error('Erro de requisição', status.error)
                         }
@@ -87,8 +134,31 @@
             }
         }
         getApi()
-
-        
     </script>
+
+    <div class="popup-overley hidden" id="customPopup">
+        <div class="popup-card">
+            <div class="popup-header">
+                <h3>Editar Perfil</h3>
+            </div>
+
+
+            <div class="popup-body">
+                <div class="input-field">
+                    <label for="popName">Nome:</label>
+                    <input type="text" id="popName" placeholder="Digite novo nome...">
+                </div>
+                <div class="input-field">
+                    <label for="popEmail">Email:</label>
+                    <input type="email" id="popEmail" placeholder="Digite o Email">
+                </div>
+            </div>
+
+            <div class="popup-footer">
+                <button class="btn-secondary" id="btnPopCancel">Cancelar</button>
+                <button class="btn-primary" id="btnPopSave">Atualizar</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

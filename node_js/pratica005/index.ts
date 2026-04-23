@@ -57,8 +57,8 @@ app.put(`/api/users/:id`, async (req, res) => {
                 id: parseInt(id),
             },
             data: {
-                name,
-                email,
+                ...(name && {name}),
+                ...(email && {email}),
             },
         });
 
