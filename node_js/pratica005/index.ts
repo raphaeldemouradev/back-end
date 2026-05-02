@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 app.use(express.static(path.join(__dirname, 'public')))
 
-
+///// Entradas /////
 // Config Cadastro
 app.post('/cadastro', async (req, res) => {
     // Gets Formulario
@@ -37,6 +37,29 @@ app.post('/cadastro', async (req, res) => {
         res.status(500).send("Erro no servidor ao salvar usuario")
     }
 
+})
+
+// Config Login 
+app.post('/login', async (req, res) => {
+    const { email, pass } = req.body;
+    console.log("Dados chegaram")
+    console.log(email, pass)
+    try {
+        const user = await prisma.user.findUnique({
+            where: {email: email}
+        })
+
+        if(user && user.pass === pass) {
+            res.status(200).json({
+                message: "Login realizado com sucesso!",
+                userName: user.name
+            })
+        } else {
+            res.status(401).json({ error: "Email ou Senha incorreto." })
+        }
+    } catch (error) {
+        res.status(500).json({ error: "Erro no servidor" })
+    }
 })
 
 ///// Controles /////
@@ -87,9 +110,14 @@ app.delete(`/api/users/:id`, async (req, res) => {
 })
 
 ///// ROTAS ////
-// Cadastro
+// Login
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/index.html'))
+})
+
+// Cadastro
+app.get('/cadastro', (req, res) => {
+    res.sendFile(path.join(__dirname, '/cadastro.html'))
 })
 
 // Config Home

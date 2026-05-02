@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="cadastro.css">
+</head>
+<body>
+    <header></header>
+    <main>
+        <div class="container">
+            <h1>Cadastro</h1>
+            <form action="http://localhost:3000/cadastro" method="post">
+                <div class="form-group">
+                    <label for="iname">Nome</label>
+                    <input type="text" name="name" id="iname">
+                </div>
+                <div class="form-group">
+                    <label for="iemail">Email</label>
+                    <input type="email" name="email" id="iemail">
+                </div>
+                <div class="form-group">
+                    <label for="ipass">Senha</label>
+                    <input type="password" name="pass" id="ipass">
+                </div>
+                <div>
+                    <input type="submit" class="btn" value="Cadastrar">
+                </div>
+            </form>
+
+            <a href="http://localhost:3000/" class="toggle-link">Fazer Login</a>
+        </div>
+    </main>
+</body>
+</html>
