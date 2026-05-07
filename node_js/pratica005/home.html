@@ -15,5 +15,34 @@
         <a href="/home" class="navbar">Home</a>
         <a href="/perfil" class="navbar">Perfil</a>
     </footer>
+
+    <!---
+    <script>
+        async function carregarDadosProtegido() {
+            const token = localStorage.getItem('userToken')
+            if (!token){
+                alert("Acesso negado! Faça login.");
+                window.location.href = 'index.html';
+                return
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/api/users', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token
+                    }
+                });
+
+                if (response.ok) {
+                    const usuarios = await response.json()
+                    console.log("Usuário carregados:", usuarios);
+                }
+            } catch (error) {
+                
+            }
+        }
+    </script>
+    --->
 </body>
 </html>

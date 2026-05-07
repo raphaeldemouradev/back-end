@@ -30,24 +30,41 @@
         async function getApi() {
             let usuarioAtualId = null
 
-            try {
+            // volte para
+            const token = localStorage.getItem('userToken');
+            if (!token) {
+                window.location.href = '/'
+                return
+            }
 
-                const resposta = await fetch('http://localhost:3000/api/users')
+            try {
+                // <autoriza>
+                const token = localStorage.getItem('userToken');
+                const resposta = await fetch('http://localhost:3000/api/users', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+                // </autoriza>
+
+                // Get Users
                 const dados = await resposta.json()
                 console.log(dados)
 
                 const nome = document.getElementsByClassName('nome-user')[0]
                 const email = document.getElementsByClassName('email-user')[0]
-                if (dados.length > 0) {
-                    const ultimoUser = dados[dados.length - 1]
+                if (dados) {
 
-                    usuarioAtualId = ultimoUser.id;
-
-                    nome.textContent = ultimoUser.name
-                    email.textContent = ultimoUser.email
+                    usuarioAtualId = dados.id;
+                    nome.textContent = dados.name
+                    email.textContent = dados.email
                 } else {
                     nome.textContent = "Erro"
                     email.textContent = "Erro"
+                    
+                    localStorage.removeItem('userToken');
+                    window.location.href = '/';
                 }
 
                 // Edit perfil
@@ -81,7 +98,10 @@
                         
                         const resposta = await fetch(`http://localhost:3000/api/users/${usuarioAtualId}`, {
                             method: "PUT",
-                            headers: {"Content-Type": "application/json"},
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': localStorage.getItem('userToken') // nova JWT
+                            },
                             body: JSON.stringify({
                                 name: novoNome,
                                 email: novoEmail,
@@ -108,18 +128,34 @@
 
                 btnDelete.addEventListener('click', async () => {
                     console.log("Deletar perfil")
+                    if (!usuarioAtualId) {
+                        alert("Não foi possível identificar o usuário para deletar.");
+                        return;
+                    }
 
                     if (confirm("Tem certeza que deseja deletar o perfil?")) {
+                        console.log("Tentando deletar perfil ID:", usuarioAtualId);
+
                         try {
-                            const resposta = await fetch(`http://localhost:3000/api/users/${dados[0].id}`, {
-                                method: "DELETE"
+                            const token = localStorage.getItem('userToken');
+
+                            const resposta = await fetch(`http://localhost:3000/api/users/${usuarioAtualId}`, {
+                                method: "DELETE",
+                                headers: {
+                                    'Authorization': token
+                                }
                             })
 
                             if (resposta.ok) {
                                 console.log("Perfil deletado com sucesso")
+                                localStorage.removeItem('userToken');
+                                alert("Sua conta foi excluída.");
+
                                 window.location.href = "/"
                             } else {
-                                console.log("Erro no servidor ao deletar o perfil")
+                                const erroDados = await resposta.json();
+                                console.log("Erro no servidor:", erroDados.message || "Erro ao deletar");
+                                alert("Erro ao deletar perfil. Verifique se você tem permissão.");
                             }
                         } catch (error) {
                             console.error('Erro de requisição', status.error)

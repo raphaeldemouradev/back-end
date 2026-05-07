@@ -3,6 +3,7 @@ import path from 'path';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { prisma } from './lib/prisma.js';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 app.use(express.json())
@@ -44,15 +45,28 @@ app.post('/login', async (req, res) => {
     const { email, pass } = req.body;
     console.log("Dados chegaram")
     console.log(email, pass)
+
+    if (!email || !pass) { // Segurança de requere
+        return res.status(400).json({ error: "Email e senha são obrigatorios!"})
+    }
+
     try {
         const user = await prisma.user.findUnique({
             where: {email: email}
         })
 
         if(user && user.pass === pass) {
-            res.status(200).json({
+            const token = jwt.sign(
+                {userId: user.id},
+                'YOUR_KEY_SECRET',
+                {expiresIn: '1h'},
+            )
+
+            return res.status(200).json({
+                success: true,
+                token: token,
+                userName: user.name,
                 message: "Login realizado com sucesso!",
-                userName: user.name
             })
         } else {
             res.status(401).json({ error: "Email ou Senha incorreto." })
@@ -65,8 +79,24 @@ app.post('/login', async (req, res) => {
 ///// Controles /////
 // API call - insert
 app.get('/api/users', async (req, res) => {
-    const usuarios = await prisma.user.findMany();
-    res.json(usuarios)
+    const token = req.headers['authorization'];
+    if (!token) return res.status(401).send("Acesso negado")
+
+        try {
+            const verificado = jwt.verify(token, 'YOUR_KEY_SECRET')
+
+            const usuario = await prisma.user.findUnique({
+                where: {id: verificado.userId}
+            });
+
+            if (!usuario) {
+                return res.status(404).send("Usuário não encontrado");
+            }
+
+            res.json(usuario)
+        } catch (error) {
+            res.status(403).send("Token invalido ou Expirado")
+        }
 })
 
 // Edit - Atualiza
