@@ -9,7 +9,7 @@
   <div class="container">
     <h2 class="form-title">Login</h2>
 
-    <form action="http://localhost:3000/login" method="post">
+    <form id="loginForm">
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="iemail" name="email" required>
@@ -25,10 +25,9 @@
   </div>
 
   <script>
-    const form = document.querySelector('form');
-
-    form.onsubmit = async (e) => {
-      e.preventDefault();
+    const form = document.getElementById('loginForm')
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
 
       const email = document.getElementById('iemail').value;
       const pass = document.getElementById('ipass').value;
@@ -38,22 +37,21 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify({ email, pass }),
-        })
+        });
 
-        const result = await response.json()
+        const dados = await response.json()
 
-        if (response.ok) {
-          localStorage.setItem('userToken', result.token)
-          localStorage.setItem('userName', result.userName)
-          window.location.href = '/home';
+        if (response.ok && dados.token) {
+          localStorage.setItem('userToken', dados.token)
+          window.location.href = '/home.html';
         } else {
-          alert(result.error)
+          alert(dados.error || "Email ou senha incorretos!");
         }
 
       } catch (error) {
         console.error("Erro ao conectar com servidor:", error)
       }
-    }
+    })
   </script>
 </body>
 </html>
