@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
-    <link rel="stylesheet" href="/perfil.css">
+    <link rel="stylesheet" href="perfil.css">
+    <link rel="stylesheet" href="global.css">
 </head>
 <body>
     <header>
-        <button class="btn-menu" id="btn-edit">Edit ✏️</button>
-        <button class="btn-menu" id="btn-delete">Delet 🗑️</button>
+        <div>
+            <button class="btn-menu" id="btn-logout">Sair 🚪</button>
+        </div>
+        <div>
+            <button class="btn-menu" id="btn-edit">Edit ✏️</button>
+            <button class="btn-menu" id="btn-delete">Delet 🗑️</button>
+        </div>
     </header>
     <main>
         <section class="profile">
@@ -30,7 +36,7 @@
         async function getApi() {
             let usuarioAtualId = null
 
-            // volte para
+            // block
             const token = localStorage.getItem('userToken');
             if (!token) {
                 window.location.href = '/'

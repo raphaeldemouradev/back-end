@@ -43,7 +43,7 @@
 
         if (response.ok && dados.token) {
           localStorage.setItem('userToken', dados.token)
-          window.location.href = '/home.html';
+          window.location.href = '/home';
         } else {
           alert(dados.error || "Email ou senha incorretos!");
         }

@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="global.css">
 </head>
 <body>
-    <header></header>
+    <header>
+        <div>
+            <button class="btn-menu" id="btn-logout">Sair 🚪</button>
+        </div>
+    </header>
     <main>
         <h1>Pagina Home</h1>
     </main>
@@ -16,33 +21,27 @@
         <a href="/perfil" class="navbar">Perfil</a>
     </footer>
 
-    <!---
     <script>
-        async function carregarDadosProtegido() {
+        const logout = document.getElementById("btn-logout");
+        logout.addEventListener('click', () => {
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userName');
+
+            alert("Você saiu da conta com sucesso!")
+            window.location.href = '/';
+        })
+
+        // block
+        function verification() {
             const token = localStorage.getItem('userToken')
-            if (!token){
-                alert("Acesso negado! Faça login.");
-                window.location.href = 'index.html';
+            console.log(token)
+
+            if (!token) {
+                window.location.href = '/';
                 return
             }
-
-            try {
-                const response = await fetch('http://localhost:3000/api/users', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': token
-                    }
-                });
-
-                if (response.ok) {
-                    const usuarios = await response.json()
-                    console.log("Usuário carregados:", usuarios);
-                }
-            } catch (error) {
-                
-            }
         }
+        verification()    
     </script>
-    --->
 </body>
 </html>
