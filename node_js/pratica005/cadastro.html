@@ -11,18 +11,18 @@
     <main>
         <div class="container">
             <h1>Cadastro</h1>
-            <form action="http://localhost:3000/cadastro" method="post">
+            <form id="formCadastro">
                 <div class="form-group">
                     <label for="iname">Nome</label>
-                    <input type="text" name="name" id="iname">
+                    <input type="text" name="name" id="iname" required>
                 </div>
                 <div class="form-group">
                     <label for="iemail">Email</label>
-                    <input type="email" name="email" id="iemail">
+                    <input type="email" name="email" id="iemail" required>
                 </div>
                 <div class="form-group">
                     <label for="ipass">Senha</label>
-                    <input type="password" name="pass" id="ipass">
+                    <input type="password" name="pass" id="ipass" required>
                 </div>
                 <div>
                     <input type="submit" class="btn" value="Cadastrar">
@@ -32,5 +32,36 @@
             <a href="http://localhost:3000/" class="toggle-link">Fazer Login</a>
         </div>
     </main>
+
+    <script>
+        const form = document.getElementById('formCadastro');
+
+        form.onsubmit = async (e) => {
+            e.preventDefault(); // Impede a página de recarregar
+
+            const name = document.getElementById('iname').value;
+            const email = document.getElementById('iemail').value;
+            const pass = document.getElementById('ipass').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/cadastro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, pass })
+                });
+
+                const dados = await response.json();
+
+                if (response.ok) {
+                    alert("Cadastro realizado com sucesso! Vamos fazer o login.");
+                    window.location.href = 'http://localhost:3000'; // Manda ele para o login!
+                } else {
+                    alert(dados.error); // Mostra "Este e-mail já está cadastrado!"
+                }
+            } catch (error) {
+                console.error("Erro ao conectar com o servidor:", error);
+            }
+        };
+</script>
 </body>
 </html>

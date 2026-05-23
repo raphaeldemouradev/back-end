@@ -21,6 +21,12 @@ app.post('/cadastro', async (req, res) => {
     const { name, email, pass } = req.body;
    
     try {
+        // Email existente
+        const usuarioExiste = await prisma.user.findUnique({ where: { email } });
+        if (usuarioExiste) {
+            return res.status(400).json({ error: "Este e-mail já está cadastrado!" });
+        }
+
         // Create banco
         const novoUsuario = await prisma.user.create({
             data: { 
@@ -31,7 +37,7 @@ app.post('/cadastro', async (req, res) => {
         })
         console.log(novoUsuario)
         
-        res.redirect(`/home`)
+        return res.status(201).json({ message: "Usuário criado com sucesso!" });
 
     } catch (error) {
         console.error("Erro de cadastro", error)
