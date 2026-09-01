@@ -36,17 +36,47 @@ export function renderRegisterModal() {
   const closeBtn = document.getElementById('closeRegisterBtn');
   const form = document.getElementById('registerForm');
 
-  if (closeBtn) {
+if (closeBtn) {
     closeBtn.addEventListener('click', () => modal.classList.remove('active'));
   }
 
+  // Bloco atualizado com fetch para o back-end em memória
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const name = document.getElementById('regName').value;
       const email = document.getElementById('regEmail').value;
       const password = document.getElementById('regPassword').value;
-      console.log('[CADASTRO] Registrando usuário:', { name, email, password });
+
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          // Exibe erros informados pelo back-end (ex: "E-mail já cadastrado!")
+          alert(data.error || 'Erro ao realizar o cadastro.');
+          return;
+        }
+
+        // Sucesso no cadastro
+        alert(data.message || 'Conta criada com sucesso!');
+
+        // Limpa o formulário e fecha o modal
+        form.reset();
+        modal.classList.remove('active');
+
+      } catch (error) {
+        console.error('[REGISTER ERROR]', error);
+        alert('Não foi possível conectar ao servidor. Verifique se o back-end está rodando.');
+      }
     });
   }
 }

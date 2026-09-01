@@ -36,12 +36,41 @@ export function renderLoginModal() {
     closeBtn.addEventListener('click', () => modal.classList.remove('active'));
   }
 
-  if (form) {
-    form.addEventListener('submit', (e) => {
+if (form) {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
-      console.log('[LOGIN] Tentando autenticar:', { email, password });
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          // Exibe a mensagem de erro que veio do back-end (ex: "E-mail ou senha incorretos!")
+          alert(data.error || 'Erro ao realizar login.');
+          return;
+        }
+
+        // Sucesso
+        alert(`Bem-vindo(a), ${data.user.name}!`);
+        
+        // Fecha o modal e limpa os campos
+        modal.classList.remove('active');
+        form.reset();
+
+      } catch (error) {
+        console.error('[LOGIN ERROR]', error);
+        alert('Não foi possível conectar ao servidor. Verifique se o back-end está rodando.');
+      }
     });
   }
 }

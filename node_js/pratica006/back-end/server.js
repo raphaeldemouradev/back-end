@@ -1,8 +1,10 @@
 import express from 'express'
+import cors from 'cors';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { trafficAnalyticsMiddleware, trafficLogs } from './src/middlewares/analytics.js';
+import authRouters from './src/routes/authRoutes.js'
 
 const app = express()
 const PORT = 3000;
@@ -12,6 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const FRONT_END_PATH = path.join(__dirname, '..', 'front-end');
 
+app.use(cors())
 app.use(express.json());
 
 // Cabeçalhos fundamentais de segurança
@@ -26,6 +29,9 @@ app.use(trafficAnalyticsMiddleware);
 
 // Servir os arquivos estáticos da pasta front-end (index.html, CSS, JS)
 app.use(express.static(FRONT_END_PATH));
+
+// --- ROTAS DA API ---
+app.use('/api/auth', authRouters);
 
 // --- ROTA DE ESTATÍSTICAS / METRICAS ---
 app.get('/api/analytics/traffic', (req, res) => {
