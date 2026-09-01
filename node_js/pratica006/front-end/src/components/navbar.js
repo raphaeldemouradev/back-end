@@ -1,16 +1,17 @@
 export function renderNavbars() {
-  // Renderiza Navbar do Topo
   const topNavContainer = document.getElementById('navbar-top-container');
   if (topNavContainer) {
     topNavContainer.innerHTML = `
       <header class="top-navbar">
         <div class="brand-logo">Prática 006</div>
-        <button class="btn-auth-trigger" id="openAuthBtn" type="button">Entrar / Cadastrar</button>
+        <div class="auth-buttons">
+          <button class="btn-auth-trigger" id="openLoginBtn" type="button">Entrar</button>
+          <button class="btn-auth-trigger secondary" id="openRegisterBtn" type="button">Cadastrar</button>
+        </div>
       </header>
     `;
   }
 
-  // Renderiza Navbar Flutuante Inferior (Com a aba Feed)
   const bottomNavContainer = document.getElementById('navbar-bottom-container');
   if (bottomNavContainer) {
     bottomNavContainer.innerHTML = `
