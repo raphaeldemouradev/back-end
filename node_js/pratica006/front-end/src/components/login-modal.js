@@ -1,5 +1,5 @@
 export function renderLoginModal() {
-  const container = document.getElementById('login-modal-container');
+  const container = document.getElementById("login-modal-container");
   if (!container) return;
 
   container.innerHTML = `
@@ -28,48 +28,54 @@ export function renderLoginModal() {
   `;
 
   // Eventos internos do modal de Login
-  const modal = document.getElementById('loginModal');
-  const closeBtn = document.getElementById('closeLoginBtn');
-  const form = document.getElementById('loginForm');
+  const modal = document.getElementById("loginModal");
+  const closeBtn = document.getElementById("closeLoginBtn");
+  const form = document.getElementById("loginForm");
 
   if (closeBtn) {
-    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+    closeBtn.addEventListener("click", () => modal.classList.remove("active"));
   }
 
-if (form) {
-    form.addEventListener('submit', async (e) => {
+  if (form) {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
+
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
 
       try {
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
+        const response = await fetch("/api/auth/login", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify({ email, password }),
         });
 
         const data = await response.json();
 
         if (!response.ok) {
           // Exibe a mensagem de erro que veio do back-end (ex: "E-mail ou senha incorretos!")
-          alert(data.error || 'Erro ao realizar login.');
+          alert(data.error || "Erro ao realizar login.");
           return;
         }
 
         // Sucesso
         alert(`Bem-vindo(a), ${data.user.name}!`);
-        
-        // Fecha o modal e limpa os campos
-        modal.classList.remove('active');
+
+        // Salva os dados da sessão no navegador
+        localStorage.setItem("user_session", JSON.stringify(data.user));
+
+        modal.classList.remove("active");
         form.reset();
 
+        // Recarrega a página para atualizar o estado da Navbar e ir para o Feed
+        window.location.reload();
       } catch (error) {
-        console.error('[LOGIN ERROR]', error);
-        alert('Não foi possível conectar ao servidor. Verifique se o back-end está rodando.');
+        console.error("[LOGIN ERROR]", error);
+        alert(
+          "Não foi possível conectar ao servidor. Verifique se o back-end está rodando.",
+        );
       }
     });
   }

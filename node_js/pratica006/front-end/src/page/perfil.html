@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prática 006 - Meu Perfil</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+  <div id="navbar-top-container"></div>
+
+  <main class="main-container">
+    <div class="ip-card">
+      <h2>Meu Perfil</h2>
+      <div class="info-group">
+        <div class="info-item">
+          <span class="info-label">Nome:</span>
+          <span id="profileName">Carregando...</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">E-mail:</span>
+          <span id="profileEmail">Carregando...</span>
+        </div>
+      </div>
+      <br>
+      <a href="/" style="color: #38bdf8; text-decoration: none; font-size: 0.9rem;">← Voltar para o Feed</a>
+    </div>
+  </main>
+
+  <script type="module">
+    import { renderNavbars } from '../../components/navbar.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbars();
+
+      const savedUser = JSON.parse(localStorage.getItem('user_session'));
+
+      // Proteção de rota: Se não estiver logado, redireciona para o Feed
+      if (!savedUser) {
+        alert('Você precisa estar logado para acessar seu perfil.');
+        window.location.href = '/';
+        return;
+      }
+
+      document.getElementById('profileName').textContent = savedUser.name;
+      document.getElementById('profileEmail').textContent = savedUser.email;
+    });
+  </script>
+</body>
+</html>

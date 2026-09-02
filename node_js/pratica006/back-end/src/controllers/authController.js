@@ -55,3 +55,20 @@ export const loginUser = async (req, res) => {
     user: { id: user.id, name: user.name, email: user.email }
   });
 };
+
+// --- NOVO MÉTODO PARA BUSCAR DADOS DO PERFIL ---
+export const getUserById = async (req, res) => {
+  const { id } = req.params;
+
+  const user = usersDatabase.find(u => u.id === id);
+
+  if (!user) {
+    return res.status(404).json({ error: 'Usuário não encontrado na memória RAM.' });
+  }
+
+  return res.status(200).json({
+    id: user.id,
+    name: user.name,
+    email: user.email
+  });
+};

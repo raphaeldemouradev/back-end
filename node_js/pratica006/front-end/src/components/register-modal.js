@@ -1,5 +1,5 @@
 export function renderRegisterModal() {
-  const container = document.getElementById('register-modal-container');
+  const container = document.getElementById("register-modal-container");
   if (!container) return;
 
   container.innerHTML = `
@@ -32,50 +32,57 @@ export function renderRegisterModal() {
   `;
 
   // Eventos internos do modal de Cadastro
-  const modal = document.getElementById('registerModal');
-  const closeBtn = document.getElementById('closeRegisterBtn');
-  const form = document.getElementById('registerForm');
+  const modal = document.getElementById("registerModal");
+  const closeBtn = document.getElementById("closeRegisterBtn");
+  const form = document.getElementById("registerForm");
 
-if (closeBtn) {
-    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => modal.classList.remove("active"));
   }
 
   // Bloco atualizado com fetch para o back-end em memória
   if (form) {
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const name = document.getElementById('regName').value;
-      const email = document.getElementById('regEmail').value;
-      const password = document.getElementById('regPassword').value;
+      const name = document.getElementById("regName").value;
+      const email = document.getElementById("regEmail").value;
+      const password = document.getElementById("regPassword").value;
 
       try {
-        const response = await fetch('/api/auth/register', {
-          method: 'POST',
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name, email, password })
+          body: JSON.stringify({ name, email, password }),
         });
 
         const data = await response.json();
 
         if (!response.ok) {
           // Exibe erros informados pelo back-end (ex: "E-mail já cadastrado!")
-          alert(data.error || 'Erro ao realizar o cadastro.');
+          alert(data.error || "Erro ao realizar o cadastro.");
           return;
         }
 
         // Sucesso no cadastro
-        alert(data.message || 'Conta criada com sucesso!');
+        alert(
+          data.message ||
+            "Conta criada com sucesso! Faça login para continuar.",
+        );
 
-        // Limpa o formulário e fecha o modal
         form.reset();
-        modal.classList.remove('active');
+        modal.classList.remove("active");
 
+        // Dispara o modal de login automaticamente para facilitar a vida do usuário
+        const openLoginBtn = document.getElementById("openLoginBtn");
+        if (openLoginBtn) openLoginBtn.click();
       } catch (error) {
-        console.error('[REGISTER ERROR]', error);
-        alert('Não foi possível conectar ao servidor. Verifique se o back-end está rodando.');
+        console.error("[REGISTER ERROR]", error);
+        alert(
+          "Não foi possível conectar ao servidor. Verifique se o back-end está rodando.",
+        );
       }
     });
   }
