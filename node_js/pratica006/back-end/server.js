@@ -42,27 +42,10 @@ app.get('/api/analytics/traffic', (req, res) => {
   });
 });
 
-// Rota explícita para a página de perfil
-// --- ROTA EXPLÍCITA PARA A PÁGINA DE PERFIL ---
+///// ROTAS /////
+// Config Perfil
 app.get('/perfil', (req, res) => {
-  // Caminho 1: Se perfil.html está em front-end/src/pages/perfil.html
-  const path1 = path.join(FRONT_END_PATH, 'src', 'pages', 'perfil.html');
-  
-  // Caminho 2: Se perfil.html está em front-end/pages/perfil.html
-  const path2 = path.join(FRONT_END_PATH, 'pages', 'perfil.html');
-  
-  // Caminho 3: Se perfil.html está direto na raiz da pasta front-end
-  const path3 = path.join(FRONT_END_PATH, 'perfil.html');
-
-  if (fs.existsSync(path1)) {
-    return res.sendFile(path1);
-  } else if (fs.existsSync(path2)) {
-    return res.sendFile(path2);
-  } else if (fs.existsSync(path3)) {
-    return res.sendFile(path3);
-  }
-
-  return res.status(404).send('Arquivo perfil.html não foi encontrado na pasta front-end.');
+  res.sendFile(path.join(__dirname, 'perfil.html'))
 });
 
 // Redirecionar qualquer rota desconhecida diretamente para a tela inicial do front-end
