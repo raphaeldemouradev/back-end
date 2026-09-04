@@ -4,48 +4,108 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prática 006 - Meu Perfil</title>
-  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/perfil.css">
 </head>
-<body>
-
-  <div id="navbar-top-container"></div>
-
-  <main class="main-container">
-    <div class="ip-card">
-      <h2>Meu Perfil</h2>
-      <div class="info-group">
-        <div class="info-item">
-          <span class="info-label">Nome:</span>
-          <span id="profileName">Carregando...</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">E-mail:</span>
-          <span id="profileEmail">Carregando...</span>
-        </div>
-      </div>
-      <br>
-      <a href="/" style="color: #38bdf8; text-decoration: none; font-size: 0.9rem;">← Voltar para o Feed</a>
+<body style="padding: 0px;">
+<div class="profile-card">
+    
+    <!-- 1. Barra Superior (Lado Esquerdo: Feed | Lado Direito: Sair) -->
+    <div class="profile-top-bar">
+      <a href="/" class="top-bar-btn">
+        ← Voltar para o Feed
+      </a>
+      <button id="logoutBtn" class="top-bar-btn logout-btn">
+        Sair da conta
+      </button>
     </div>
-  </main>
+
+    <!-- 2. Banner com Foto de Perfil Dentro -->
+    <div class="profile-banner">
+      <div class="banner-avatar-container">
+        <img src="https://via.placeholder.com/90" alt="Foto de Perfil" id="avatarImg" />
+      </div>
+    </div>
+
+    <!-- 3. Informações do Usuário (Nome e E-mail) -->
+    <div class="profile-info">
+      <h1 class="profile-name" id="profileName">Carregando...</h1>
+      <p class="profile-email" id="profileEmail">carregando@email.com</p>
+    </div>
+
+    <!-- 4. Botão Editar Perfil Centralizado -->
+    <div class="profile-actions-center">
+      <button id="editProfileBtn" class="edit-btn">
+        <svg class="pencil-icon" viewBox="0 0 24 24" width="16" height="16">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+        <span>Editar perfil</span>
+      </button>
+    </div>
+
+    <!-- 5. Divisória de Seção -->
+    <div class="profile-divider"></div>
+
+    <!-- 6. Seção de Publicações -->
+    <div class="posts-section">
+      <p class="empty-posts-text">Este usuário ainda não publicou nada.</p>
+    </div>
+
+  </div>
 
   <script type="module">
-    import { renderNavbars } from '../../components/navbar.js';
-
     document.addEventListener('DOMContentLoaded', () => {
-      renderNavbars();
+  const savedUser = JSON.parse(localStorage.getItem('user_session'));
 
-      const savedUser = JSON.parse(localStorage.getItem('user_session'));
+  if (!savedUser) {
+    window.location.href = '/';
+    return;
+  }
 
-      // Proteção de rota: Se não estiver logado, redireciona para o Feed
-      if (!savedUser) {
-        alert('Você precisa estar logado para acessar seu perfil.');
-        window.location.href = '/';
-        return;
+  const nameInput = document.getElementById('profileName');
+  const emailInput = document.getElementById('profileEmail');
+  const form = document.getElementById('editProfileForm');
+  const messageEl = document.getElementById('profileMessage');
+
+  // Preenche os campos com os dados atuais salvos
+  nameInput.value = savedUser.name || '';
+  emailInput.value = savedUser.email || '';
+
+  // Manipula o envio das alterações
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const updatedData = {
+      id: savedUser.id,
+      name: nameInput.value,
+      email: emailInput.value
+    };
+
+    try {
+      const response = await fetch('/api/perfil/atualizar', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Atualiza a sessão no localStorage para refletir as mudanças na Navbar/Perfil
+        localStorage.setItem('user_session', JSON.stringify({ ...savedUser, name: updatedData.name, email: updatedData.email }));
+        
+        messageEl.style.color = '#10b981';
+        messageEl.textContent = 'Perfil atualizado com sucesso!';
+      } else {
+        messageEl.style.color = '#ef4444';
+        messageEl.textContent = result.message || 'Erro ao atualizar o perfil.';
       }
-
-      document.getElementById('profileName').textContent = savedUser.name;
-      document.getElementById('profileEmail').textContent = savedUser.email;
-    });
+    } catch (error) {
+      messageEl.style.color = '#ef4444';
+      messageEl.textContent = 'Erro ao conectar com o servidor.';
+    }
+  });
+});
   </script>
 </body>
 </html>

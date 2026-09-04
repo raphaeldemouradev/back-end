@@ -42,6 +42,21 @@ app.get('/api/analytics/traffic', (req, res) => {
   });
 });
 
+// Atualizar Perfil
+app.put('/api/perfil/atualizar', async (req, res) => {
+  const { id, name, email } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ message: 'Nome e e-mail são obrigatórios.' });
+  }
+
+  // Aqui você faria a atualização no seu banco de dados (ex: Prisma/SQLite ou Array)
+  // Exemplo simulado:
+  // await prisma.user.update({ where: { id: id }, data: { name, email } });
+
+  return res.status(200).json({ message: 'Dados atualizados com sucesso!' });
+});
+
 ///// ROTAS /////
 // Config Perfil
 app.get('/perfil', (req, res) => {
