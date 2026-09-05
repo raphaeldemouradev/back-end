@@ -1,9 +1,11 @@
+// Importa o módulo do modal de postagem separado
+import { initPostModal } from './postModal.js';
+
 export function renderNavbars() {
   const topNavContainer = document.getElementById('navbar-top-container');
-  
-  // Recupera os dados do usuário salvos no navegador
   const savedUser = JSON.parse(localStorage.getItem('user_session'));
 
+  // 1. Renderiza a Navbar Superior
   if (topNavContainer) {
     topNavContainer.innerHTML = `
       <style>
@@ -29,7 +31,6 @@ export function renderNavbars() {
           gap: 0.75rem;
         }
 
-        /* Estilização do Link do Perfil */
         .user-profile-link {
           display: inline-flex;
           align-items: center;
@@ -85,7 +86,6 @@ export function renderNavbars() {
         <div class="brand-logo">Prática 006</div>
         <div class="auth-buttons">
           ${savedUser ? `
-            <!-- ✅ ROTA CORRIGIDA (Altere para /perfil.html se estiver na raiz) -->
             <a href="/perfil.html" class="user-profile-link">
               👤 ${savedUser.name}
             </a>
@@ -99,21 +99,84 @@ export function renderNavbars() {
     `;
   }
 
-  // Listener para a ação de Sair (Logout)
-  document.addEventListener('click', (e) => {
-    if (e.target && e.target.id === 'logoutBtn') {
-      localStorage.removeItem('user_session');
-      window.location.href = '/'; // Retorna ao Feed principal
-    }
-  });
-
+  // 2. Renderiza a Navbar Inferior
   const bottomNavContainer = document.getElementById('navbar-bottom-container');
   if (bottomNavContainer) {
     bottomNavContainer.innerHTML = `
+      <style>
+        .floating-navbar {
+          position: fixed;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.5rem 1rem;
+          background-color: #1e293b;
+          border: 1px solid #334155;
+          border-radius: 40px;
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+          z-index: 1000;
+        }
+
+        .nav-tab {
+          background: none;
+          border: none;
+          color: #94a3b8;
+          font-weight: 600;
+          font-size: 0.9rem;
+          cursor: pointer;
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          transition: color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .nav-tab.active, .nav-tab:hover {
+          color: #f8fafc;
+          background-color: #334155;
+        }
+
+        .btn-add-post {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 42px;
+          height: 42px;
+          border-radius: 50%;
+          border: none;
+          background-color: #38bdf8;
+          color: #0f172a;
+          font-size: 1.5rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: transform 0.2s ease, background-color 0.2s ease;
+          line-height: 1;
+        }
+
+        .btn-add-post:hover {
+          background-color: #0284c7;
+          color: #ffffff;
+          transform: scale(1.08);
+        }
+      </style>
+
       <nav class="floating-navbar">
         <button class="nav-tab active" type="button">Feed</button>
+        <button class="btn-add-post" id="openPostModalBtn" type="button" title="Criar Postagem">+</button>
         <button class="nav-tab" type="button">Notícias</button>
       </nav>
     `;
   }
+
+  // Inicializa o módulo separado do modal
+  initPostModal();
 }
+
+// Listener para a ação de Sair (Logout)
+document.addEventListener('click', (e) => {
+  if (e.target && e.target.id === 'logoutBtn') {
+    localStorage.removeItem('user_session');
+    window.location.href = '/';
+  }
+});
