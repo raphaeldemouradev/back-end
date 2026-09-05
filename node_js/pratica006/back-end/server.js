@@ -6,17 +6,17 @@ import { fileURLToPath } from 'node:url';
 
 import { trafficAnalyticsMiddleware, trafficLogs } from './src/middlewares/analytics.js';
 import authRouters from './src/routes/authRoutes.js'
+import { createPost, getPosts } from './src/api/posts.js';
 
 const app = express()
+app.use(cors())
+app.use(express.json());
 const PORT = 3000;
 
 // Configuração dos caminhos (__dirname não existe em ES Modules nativos)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const FRONT_END_PATH = path.join(__dirname, '..', 'front-end');
-
-app.use(cors())
-app.use(express.json());
 
 // Cabeçalhos fundamentais de segurança
 app.use((req, res, next) => {
@@ -40,6 +40,14 @@ app.get('/api/analytics/traffic', (req, res) => {
     totalAcessos: trafficLogs.length,
     logs: trafficLogs
   });
+});
+
+// Rotas da API de postagens
+app.post('/api/posts', createPost);
+app.get('/api/posts', getPosts);
+
+app.listen(3000, () => {
+  console.log('Servidor rodando na porta 3000');
 });
 
 // Atualizar Perfil

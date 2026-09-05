@@ -137,7 +137,7 @@ function setupPostModalEvents() {
   closeBtn?.addEventListener('click', closeModal);
   cancelBtn?.addEventListener('click', closeModal);
 
-  form?.addEventListener('submit', (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const savedUser = JSON.parse(localStorage.getItem('user_session'));
@@ -150,8 +150,24 @@ function setupPostModalEvents() {
       content: content
     };
 
-    console.log('Payload pronto para o backend:', payload);
+    try {
+      const response = await fetch('/api/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
 
-    closeModal();
+      if (response.ok) {
+        closeModal();
+        // Aqui chamaremos a função para recarregar as postagens no feed
+        } else {
+
+          alert('Erro ao criar publicação.');
+        }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+    }
   });
 }
